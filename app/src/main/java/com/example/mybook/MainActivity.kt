@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var frameLayout: FrameLayout
     lateinit var navigationView: NavigationView
 
+    var previoyusMenuItem: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         setUpToolbar()
 
+        openDashboard()
+
         val actionBarDrawerToggle = ActionBarDrawerToggle(
             this@MainActivity,
             drawerLayout,
@@ -43,30 +47,36 @@ class MainActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener {
 
+            if(previoyusMenuItem != null)
+            {
+                previoyusMenuItem?.isChecked = false
+            }
+
+            it.isCheckable = true
+            it.isChecked = true
+            previoyusMenuItem = it
+
             when(it.itemId){
                 R.id.dashboard -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, DashboardFragment())
-                        .addToBackStack("Dashboard Fragment")
-                        .commit()
+                    openDashboard()
                 }
                 R.id.profile -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, ProfileFragment())
-                        .addToBackStack("Profile")
                         .commit()
+                    supportActionBar?.title="Profile"
                 }
                 R.id.favourites -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, FavouritesFragment())
-                        .addToBackStack("Favourites")
                         .commit()
+                    supportActionBar?.title="favourites"
                 }
                 R.id.aboutus -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, AboutUsFragment())
-                        .addToBackStack("About Us")
                         .commit()
+                    supportActionBar?.title="About App"
                 }
             }
             return@setNavigationItemSelectedListener true
@@ -88,5 +98,25 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.openDrawer(GravityCompat.START)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun openDashboard()
+    {
+        val fragment = DashboardFragment()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameLayout, fragment)
+        transaction.commit()
+        supportActionBar?.title="Dashboard"
+        navigationView.setCheckedItem((R.id.dashboard))
+    }
+
+    override fun onBackPressed() {
+        val frag = supportFragmentManager.findFragmentById(R.id.frameLayout)
+        when(frag){
+            !is DashboardFragment -> openDashboard()
+
+            else -> super.onBackPressed()
+        }
+
     }
 }
