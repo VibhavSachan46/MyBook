@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.dashboard -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, DashboardFragment())
-                        .addToBackStack("Dashboard")
+                        .addToBackStack("Dashboard Fragment")
                         .commit()
                 }
                 R.id.profile -> {
