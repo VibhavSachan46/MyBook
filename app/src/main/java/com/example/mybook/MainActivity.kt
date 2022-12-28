@@ -47,16 +47,26 @@ class MainActivity : AppCompatActivity() {
                 R.id.dashboard -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, DashboardFragment())
+                        .addToBackStack("Dashboard")
                         .commit()
                 }
                 R.id.profile -> {
-                    Toast.makeText(this@MainActivity,"CLicked on profile" ,Toast.LENGTH_SHORT).show()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, ProfileFragment())
+                        .addToBackStack("Profile")
+                        .commit()
                 }
                 R.id.favourites -> {
-                    Toast.makeText(this@MainActivity,"CLicked on favourites" ,Toast.LENGTH_SHORT).show()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, FavouritesFragment())
+                        .addToBackStack("Favourites")
+                        .commit()
                 }
                 R.id.aboutus -> {
-                    Toast.makeText(this@MainActivity,"CLicked on aboutus" ,Toast.LENGTH_SHORT).show()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameLayout, AboutUsFragment())
+                        .addToBackStack("About Us")
+                        .commit()
                 }
             }
             return@setNavigationItemSelectedListener true
